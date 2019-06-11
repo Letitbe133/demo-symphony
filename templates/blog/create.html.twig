@@ -1,0 +1,83 @@
+{% extends "base.html.twig" %}
+
+{% block title %}
+    {{ page_title }}
+{% endblock %}
+
+{% form_theme formArticle 'bootstrap_4_layout.html.twig' %}
+
+{% block body %}
+    {% if app.user %}
+        {% if editMode %}
+        <h1>Modifier un article</h1>
+
+        {% else %}
+        <h1>Créer un nouvel article</h1>
+
+    {% endif %}
+
+    {# pour afficher le formulaire sans modif #}
+        {# {{ form(formArticle) }} #}
+
+    {{ form_start(formArticle) }}
+
+        <div class="form-group">
+            {{ form_row(formArticle.title, {
+                'label': "Titre de l'article",
+                'attr': {
+                    'placeholder': "Entrez le titre de l'article",
+                    "id": "article-title"
+                }
+            })}}
+
+            {# {{ form_widget(formArticle.title, {
+                "attr": {
+                    "placeholder": "Entrez le titre de l'article",
+                    "id": "article-title"
+                }
+            }) }} #}
+        </div>
+                <div class="form-group">
+            {{ form_row(formArticle.category, {'label': "Catégorie de l'article"}) }}
+
+        </div>
+
+        <div class="form-group">
+            {{ form_row(formArticle.content, {
+                'label': "Contenu de l'article",
+                'attr': {
+                    'placeholder': "Entrez le contenu de l'article",
+                    "id": "article-content"
+                }
+            })}}
+        </div>
+        <div class="form-group">
+            {{ form_row(formArticle.image, {
+                'label': "Image de l'article",
+                'attr': {
+                    'placeholder': "Entrez l'url de l'image'",
+                    "id": "article-image"
+                }
+            })}}
+        </div>
+
+        <button type="submit" class="btn btn-success">
+
+            {%  if editMode %}
+            Enregistrer les modifications
+
+            {% else %}
+            Ajouter l'article
+
+            {% endif %}
+
+        </button>
+
+    {{ form_end(formArticle) }}
+
+    {% else %}
+        
+    {% endif %}
+
+
+{% endblock %}

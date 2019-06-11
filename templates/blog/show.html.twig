@@ -1,0 +1,71 @@
+{% extends "base.html.twig" %}
+
+{% block title %}
+    {{ page_title }}
+{% endblock %}
+
+{% block body %}
+
+    <section>
+        <h2>{{ article.title }}</h2>
+        <div class="metadata">Publié le {{ article.createdAt | date('d/m/Y') }} à {{ article.createdAt | date('H:i') }} dans la catégorie {{ article.category.title }}</div>
+        <div class="content">
+            <img src="{{ article.image }}" alt="">
+            {{ article.content | raw }}
+        </div>
+        <a class="btn btn-info" href="{{ path('blog')}}">Retour vers la liste des articles</a>
+        <a class="btn btn-warning" href="{{ path('blog_edit', {'id': article.id}) }}">Editer l'article</a>
+    </section>
+
+    <section id="commentaires">
+        {% if (article.comments | length) > 0 %}
+            <h2>{{ article.comments | length }} commentaires ont été publiés</h2>
+        {% else %}
+            <h2>Aucun commentaire publié. Ajoutez le vôtre !</h2>
+        {% endif %}
+        {% for comment in article.comments %}
+            <div class="comment">
+                <div class="row card">
+                    <div class="col-3">
+                        {{ comment.author }} (<small>{{ comment.createdAt | date('d/m/Y à H:i')}})</small>)
+                    </div>
+                    <div class="col">
+                        {{ comment.content | raw }}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+
+        {% if app.user %}
+            <div class="row">
+                <h2>Publier un commentaire</h2>
+                <div class="col-12">
+                    {{ form_start(commentForm) }}
+                        {{ form_row(commentForm.author, {
+                            'label': 'Auteur',
+                            'attr': {
+                                'placeholder': 'Votre nom ou pseudo'
+                            }
+                        }) }}
+                        {{ form_row(commentForm.content, {
+                            'label': 'Commentaire',
+                            'attr': {
+                                'placeholder': 'Votre commentaire'
+                            }
+                        }) }}
+
+                        <button type="submit" class="btn btn-success">Publier</button>
+                    {{ form_end(commentForm) }}        
+                
+                </div>
+            </div>
+        {% else %}
+            <h2>Vous devez être connecté pour publier un commentaire</h2>
+            <a href="{{ path('security_login') }}" class="btn btn-success">Connexion</a>
+        {% endif %}
+
+
+
+    </section>
+
+{% endblock %}
