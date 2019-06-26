@@ -23,6 +23,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 // injection de dépendance
 // use App\Repository\ArticleRepository;
 
+/**
+ * @Route("/")
+ */
 class BlogController extends AbstractController
 {
     /**
@@ -74,6 +77,8 @@ class BlogController extends AbstractController
         // on construit le formulaire à partir de la classe article
         $form = $this->createForm(ArticleType::class, $article);
 
+        dump($form);
+
         // traitement de la requête
         $form->handleRequest($request);
 
@@ -100,7 +105,8 @@ class BlogController extends AbstractController
             'formArticle' => $form->createView(),
             // si on reçoit un article en paramètre, on passe editMode à false
             'editMode' => $article->getId() !== null,
-            'page_title' => ($article->getId()) ? 'Blog | Modification de l\'article ' . $article->getTitle() : 'Blog | Création d\'un article'
+            'page_title' => ($article->getId()) ? 'Blog | Modification de l\'article ' . $article->getTitle() : 'Blog | Création d\'un article',
+            'variable_test' => 'ceci est un test'
         ]);
     }
 
